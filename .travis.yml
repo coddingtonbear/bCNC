@@ -4,7 +4,7 @@ addons:
         packages:
             - libpng-dev
             - zlib1g-dev
-            - libxext-dev
+            - libxtst-dev
             - socat
 cache:
     pip: true
