@@ -1,0 +1,20 @@
+language: python
+addons:
+    apt:
+        packages:
+            - libpng-dev
+            - zlib1g-dev
+            - libxext-dev
+            - socat
+cache:
+    pip: true
+python:
+    - '2.7'
+    - '3.4'
+before_install:
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
+install:
+    - bash tests/init_environment.sh
+script:
+    - tests/run_tests.sh
