@@ -38,6 +38,9 @@ class BaseGUITestCase(unittest.TestCase):
         if name is None:
             name = str(int(time.time() * 1000)) + '.png'
 
+        if not os.path.isdir(self.SCREENSHOT_DIR):
+            os.mkdir(self.SCREENSHOT_DIR)
+
         autopy.bitmap.capture_screen().save(
             os.path.join(
                 self.SCREENSHOT_DIR,

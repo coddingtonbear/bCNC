@@ -1,6 +1,9 @@
 language: python
 addons:
-    artifacts: true
+    artifacts:
+        s3_region: "us-west-2"
+        paths:
+            - tests/screenshots/
     apt:
         packages:
             - libpng-dev
