@@ -19,6 +19,8 @@ echo "Starting GRBL Simulator at /tmp/ttyFAKE"
 ./simport.sh &
 cd $MAIN_DIR
 
-echo "Installing Testing Requirements"
-cd tests
+echo "Installing bCNC Requirements"
 pip install -r ./requirements.txt
+
+echo "Installing Testing Requirements"
+pip install -r ./tests/requirements.txt
