@@ -12,6 +12,8 @@ import re
 import sys
 #import cgi
 import json
+import logging
+from StringIO import StringIO
 import urllib
 import tempfile
 import threading
@@ -34,6 +36,9 @@ except ImportError:
 	import http.server as HTTPServer
 
 import Camera
+
+
+logger = logging.getLogger(__name__)
 
 HOSTNAME = "localhost"
 port     = 8080
@@ -114,19 +119,21 @@ class Pendant(HTTPServer.BaseHTTPRequestHandler):
 		elif page == "/canvas":
 			if not Image:
 				return
-			with tempfile.NamedTemporaryFile(suffix='.ps') as tmp:
-				httpd.app.canvas.postscript(
-					file=tmp.name,
-					colormode='color',
-				)
-				tmp.flush()
-				with tempfile.NamedTemporaryFile(suffix='.gif') as out:
-					Image.open(tmp.name).save(out.name, 'GIF')
-					out.flush()
-					out.seek(0)
+			try:
+				output = StringIO()
+				Image.open(
+					StringIO(
+						httpd.app.canvas.postscript(
+							colormode='color',
+						)
+					)
+				).save(output, 'GIF')
 
-					self.do_HEAD(200, content="image/gif")
-					self.wfile.write(out.read())
+				self.do_HEAD(200, content="image/gif")
+				self.wfile.write(output.getvalue())
+
+			except Exception as e:
+				logger.exception(e)
 
 		elif page == "/camera":
 			if not Camera.hasOpenCV(): return
