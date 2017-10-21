@@ -29,14 +29,20 @@ class BaseGUITestCase(unittest.TestCase):
             )
         ])
 
+        self.screenshot_counter = 0
+
         # We need to give the GUI enough time to start up; this is
         # probably enough, but ideally we'd just check for the presence
         # of the window so we don't wait unnecessarily.
         time.sleep(5)
 
     def save_screenshot(self, name=None):
+
         if name is None:
-            name = str(int(time.time() * 1000)) + '.png'
+            name = '{test_name}.{counter}.png'.format(
+                test_name=self.id(),
+                counter=self.screenshot_counter
+            )
 
         if not os.path.isdir(self.SCREENSHOT_DIR):
             os.mkdir(self.SCREENSHOT_DIR)
@@ -47,6 +53,7 @@ class BaseGUITestCase(unittest.TestCase):
                 name,
             )
         )
+        self.screenshot_counter += 1
 
     def get_python_path(self):
         virtual_env = os.environ.get('VIRTUAL_ENV')
