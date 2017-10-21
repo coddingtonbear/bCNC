@@ -3,8 +3,15 @@ import unittest
 import subprocess
 import time
 
+import autopy
+
 
 class BaseGUITestCase(unittest.TestCase):
+    SCREENSHOT_DIR = os.path.join(
+        os.path.dirname(__file__),
+        '../screenshots/'
+    )
+
     def setUp(self):
         self.build_dir = os.environ.get(
             'TRAVIS_BUILD_DIR',
@@ -26,6 +33,17 @@ class BaseGUITestCase(unittest.TestCase):
         # probably enough, but ideally we'd just check for the presence
         # of the window so we don't wait unnecessarily.
         time.sleep(5)
+
+    def save_screenshot(self, name=None):
+        if name is None:
+            name = str(int(time.time() * 1000)) + '.png'
+
+        autopy.bitmap.capture_screen().save(
+            os.path.join(
+                self.SCREENSHOT_DIR,
+                name,
+            )
+        )
 
     def get_python_path(self):
         virtual_env = os.environ.get('VIRTUAL_ENV')

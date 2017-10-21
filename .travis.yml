@@ -1,5 +1,6 @@
 language: python
 addons:
+    artifacts: true
     apt:
         packages:
             - libpng-dev
