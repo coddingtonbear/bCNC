@@ -12,6 +12,7 @@ addons:
             - libtesseract-dev
             - libopencv-dev
             - socat
+            - wmctrl
 cache:
     pip: true
 python:
