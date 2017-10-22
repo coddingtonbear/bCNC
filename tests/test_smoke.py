@@ -9,13 +9,13 @@ class SmokeTest(BaseGUITestCase):
         self.assertFalse(self.gui_proc.poll())
 
     def test_open_terminal(self):
+        import time
         self.save_screenshot()
 
         timeout = time.time() + 30
         with self.async_sikuli_script('open_terminal.sikuli') as proc:
             while not proc.poll():
                 self.save_screenshot()
-                import time
                 time.sleep(500)
 
                 if time.time() > timeout:
