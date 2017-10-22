@@ -58,7 +58,7 @@ class BaseGUITestCase(unittest.TestCase):
             self.save_screenshot()
 
     def send_command(self, cmd):
-        pyautogui.press('space')
+        pyautogui.hotkey('ctrl', 'space')
         pyautogui.typewrite(cmd)
         pyautogui.press('enter')
         pyautogui.press('escape')
