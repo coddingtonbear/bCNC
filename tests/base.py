@@ -48,8 +48,10 @@ class BaseGUITestCase(unittest.TestCase):
         time.sleep(5)
 
         self.save_screenshot()
+        print "Setup complete."
 
     def tearDown(self):
+        print "Running teardown..."
         self.save_screenshot()
         super(BaseGUITestCase, self).tearDown()
 

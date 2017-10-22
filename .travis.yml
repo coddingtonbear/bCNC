@@ -27,4 +27,4 @@ before_install:
 install:
     - bash tests/init_environment.sh
 script:
-    - pytest tests/
+    - pytest --capture=no tests/
