@@ -37,7 +37,6 @@ class BaseGUITestCase(unittest.TestCase):
         time.sleep(5)
 
     def save_screenshot(self, name=None):
-
         if name is None:
             name = '{test_name}.{counter}.png'.format(
                 test_name=self.id(),

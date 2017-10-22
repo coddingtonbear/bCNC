@@ -19,8 +19,16 @@ echo "Starting GRBL Simulator at /tmp/ttyFAKE"
 ./simport.sh &
 cd $MAIN_DIR
 
+#echo "Installing Sikulix"
+wget https://launchpad.net/sikuli/sikulix/1.1.1/+download/sikulixsetup-1.1.1.jar
+java -jar sikulixsetup-1.1.1.jar options 2
+
 echo "Installing bCNC Requirements"
+pip install 
 pip install -r ./requirements.txt
 
 echo "Installing Testing Requirements"
-pip install -r ./tests/requirements.txt
+pip install pyobjc==4.0
+pip install cython==0.27.1
+pip install pyjnius==1.1.1
+pip install pytest==3.2.3
