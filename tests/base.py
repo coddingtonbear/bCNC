@@ -5,16 +5,8 @@ import subprocess
 import time
 
 import imageio
-import pyscreenshot
+import pyautogui
 import requests
-
-
-class SikuliError(Exception):
-    pass
-
-
-class SikuliTimeout(SikuliError):
-    pass
 
 
 class BaseGUITestCase(unittest.TestCase):
@@ -35,21 +27,18 @@ class BaseGUITestCase(unittest.TestCase):
                 '../',
             )
         )
-        dev_null = open(os.devnull, 'w')
         self.grbl_proc = subprocess.Popen(
             [
                 'socat',
                 '-d-d',
                 'PTY,raw,link=/tmp/ttyFAKE,echo=0,waitslave',
-                "EXEC:'{grbl_sim_path} 100000 -n',pty,raw,echo=0".format(
+                "EXEC:'{grbl_sim_path} -n',pty,raw,echo=0".format(
                     grbl_sim_path=os.path.join(
                         self.build_dir,
                         'grbl/grbl/grbl-sim/grbl_sim.exe'
                     )
                 ),
             ],
-            stdout=dev_null,
-            stderr=dev_null,
         )
         self.gui_proc = subprocess.Popen([
             self.get_python_path(),
@@ -64,6 +53,14 @@ class BaseGUITestCase(unittest.TestCase):
             print("Serial port failed to start: %s" % self.grbl_proc.poll())
 
         self.save_screenshot()
+        for _ in range(5):
+            time.sleep(1)
+            self.save_screenshot()
+
+    def send_command(self, cmd):
+        pyautogui.press('space')
+        pyautogui.typewrite(cmd)
+        pyautogui.press('escape')
 
     def tearDown(self):
         self.save_screenshot()
@@ -109,38 +106,6 @@ class BaseGUITestCase(unittest.TestCase):
         # If we've made it this far, the process is still running
         self.gui_proc.kill()
 
-    def _run_sikuli(self, name):
-        proc = subprocess.Popen([
-            os.path.join(
-                self.build_dir,
-                'runsikulix'
-            ),
-            '-r',
-            os.path.join(
-                self.build_dir,
-                'tests/scripts/',
-                name,
-            )
-        ])
-        return proc
-
-    @contextlib.contextmanager
-    def async_sikuli_script(self, name, timeout=30):
-        started = time.time()
-        proc = self._run_sikuli(name)
-        yield proc
-        while proc.poll() is None:
-            if timeout and time.time() > started + timeout:
-                proc.kill()
-                raise SikuliTimeout()
-            time.sleep(0.1)
-        if proc.returncode != 0:
-            raise SikuliError(proc.returncode)
-
-    def run_sikuli_script(self, *args, **kwargs):
-        with self.async_sikuli_script(*args, **kwargs) as proc:
-            return proc.wait()
-
     def get_bcnc_state(self):
         return requests.get('http://127.0.0.1:5001/state').json()
 
@@ -166,8 +131,7 @@ class BaseGUITestCase(unittest.TestCase):
             name,
         )
 
-        im = pyscreenshot.grab()
-        im.save(absolute_path)
+        pyautogui.screenshot(absolute_path)
         self.screenshot_counter += 1
 
         self.screenshots.append({

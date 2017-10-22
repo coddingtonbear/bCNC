@@ -14,17 +14,16 @@ class SmokeTest(BaseGUITestCase):
             '/tmp/',
         )
 
-        self.run_sikuli_script('run_sample_gcode.sikuli')
+        self.save_screenshot()
+        self.send_command('load /tmp/sample.gcode')
+        self.save_screenshot()
+        self.send_command('run')
+        print self.get_bcnc_state()
+        self.save_screenshot()
 
-        max_time = time.time() + 600
-        while (
-            self.get_bcnc_state()['state'] != 'Idle'
-            and time.time() < max_time
-        ):
-            self.save_screenshot()
-            print self.get_bcnc_state()
-            time.sleep(0.5)
-
-        self.assertTrue(
-            'Complete' in self.get_bcnc_state()['msg']
-        )
+        time.sleep(5)
+        print self.get_bcnc_state()
+        self.send_command('stop')
+        print self.get_bcnc_state()
+        self.save_screenshot()
+        print self.get_bcnc_state()

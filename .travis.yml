@@ -15,6 +15,7 @@ addons:
             - wmctrl
             - xdotool
             - fluxbox
+            - scrot
 cache:
     pip: true
 python:
@@ -30,4 +31,4 @@ before_install:
 install:
     - bash tests/init_environment.sh
 script:
-    - pytest --capture=no tests/
+    - pytest --capture=no --verbose tests/
