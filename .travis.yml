@@ -13,6 +13,7 @@ addons:
             - libopencv-dev
             - socat
             - wmctrl
+            - xdotool
             - fluxbox
 cache:
     pip: true
