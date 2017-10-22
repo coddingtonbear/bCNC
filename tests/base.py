@@ -7,6 +7,10 @@ import time
 import pyscreenshot
 
 
+class SikuliError(Exception):
+    pass
+
+
 class BaseGUITestCase(unittest.TestCase):
     SCREENSHOT_DIR = os.path.join(
         os.path.dirname(__file__),
@@ -52,7 +56,9 @@ class BaseGUITestCase(unittest.TestCase):
             )
         ])
         yield proc
-        proc.wait()
+        result = proc.wait()
+        if result != 0:
+            raise SikuliError(result)
 
     def run_sikuli_script(self, name):
         proc = subprocess.Popen([
@@ -67,7 +73,11 @@ class BaseGUITestCase(unittest.TestCase):
                 name,
             )
         ])
-        return proc.wait()
+        result = proc.wait()
+        if result != 0:
+            raise SikuliError(result)
+
+        return result
 
     def save_screenshot(self, name=None):
         if name is None:
