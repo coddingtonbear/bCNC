@@ -38,7 +38,7 @@ class BaseGUITestCase(unittest.TestCase):
         self.grbl_proc = subprocess.Popen([
             'socat',
             '-d-d',
-            'PTY,raw,link=/tmp/ttyFAKE,echo=0',
+            'PTY,raw,link=/tmp/ttyFAKE,echo=0,waitslave',
             "EXEC:'{grbl_sim_path} 1 -n',pty,raw,echo=0".format(
                 grbl_sim_path=os.path.join(
                     self.build_dir,
