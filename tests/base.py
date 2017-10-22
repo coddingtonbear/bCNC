@@ -6,6 +6,7 @@ import time
 
 import imageio
 import pyscreenshot
+import requests
 
 
 class SikuliError(Exception):
@@ -118,6 +119,9 @@ class BaseGUITestCase(unittest.TestCase):
     def run_sikuli_script(self, *args, **kwargs):
         with self.async_sikuli_script(*args, **kwargs) as proc:
             return proc.wait()
+
+    def get_bcnc_state(self):
+        return requests.get('http://127.0.0.1:5001/state').json()
 
     def get_static_path(self, filename):
         return os.path.join(

@@ -31,3 +31,4 @@ java -jar sikulixsetup-1.1.1.jar options 1.1
 echo "Installing Test Requirements"
 pip install pyscreenshot==0.4.2
 pip install pytest==3.2.3
+pip install requests==2.18.4
