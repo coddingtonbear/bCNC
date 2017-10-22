@@ -20,7 +20,7 @@ echo "Starting GRBL Simulator at /tmp/ttyFAKE"
 cd $MAIN_DIR
 
 echo "Installing bCNC Requirements"
-pip install pillow==4.3.0
+pip install imageio==2.2.0
 pip install pyserial==3.4
 cp tests/travis_bcnc_config.ini ~/.bCNC
 

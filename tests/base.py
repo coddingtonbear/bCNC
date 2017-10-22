@@ -4,6 +4,7 @@ import unittest
 import subprocess
 import time
 
+import imageio
 import pyscreenshot
 
 
@@ -24,6 +25,7 @@ class BaseGUITestCase(unittest.TestCase):
     def setUp(self):
         super(BaseGUITestCase, self).setUp()
         self.screenshot_counter = 0
+        self.screenshots = []
 
         self.build_dir = os.environ.get(
             'TRAVIS_BUILD_DIR',
@@ -46,6 +48,28 @@ class BaseGUITestCase(unittest.TestCase):
 
     def tearDown(self):
         self.save_screenshot()
+
+        # Create an animated gif of the captured screenshots for this test.
+        images = []
+        for screenshot_name in self.screenshots:
+            images.append(
+                imageio.imread(
+                    os.path.join(
+                        self.SCREENSHOT_DIR,
+                        screenshot_name,
+                    )
+                )
+            )
+        imageio.mimsave(
+            os.path.join(
+                self.SCREENSHOT_DIR,
+                '{test_name}.gif'.format(
+                    test_name=self.id()
+                )
+            ),
+            images,
+            fps=0.5
+        )
 
         max_termination_wait_seconds = 5
         terminated = time.time()
@@ -115,6 +139,8 @@ class BaseGUITestCase(unittest.TestCase):
             )
         )
         self.screenshot_counter += 1
+
+        self.screenshots.append(name)
 
     def get_python_path(self):
         virtual_env = os.environ.get('VIRTUAL_ENV')
