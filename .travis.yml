@@ -11,9 +11,9 @@ addons:
             - libxtst-dev
             - libtesseract-dev
             - libopencv-dev
-            - lubuntu-desktop
             - socat
             - wmctrl
+            - fluxbox
 cache:
     pip: true
 python:
@@ -22,6 +22,7 @@ python:
 before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
+    - fluxbox &
 install:
     - bash tests/init_environment.sh
 script:
