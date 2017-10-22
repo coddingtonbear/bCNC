@@ -16,7 +16,11 @@ class SmokeTest(BaseGUITestCase):
 
         self.run_sikuli_script('run_sample_gcode.sikuli')
 
-        while self.get_bcnc_state()['state'] != 'Idle':
+        max_time = time.time() + 60
+        while (
+            self.get_bcnc_state()['state'] != 'Idle'
+            and time.time() < max_time
+        ):
             self.save_screenshot()
             print self.get_bcnc_state()
             time.sleep(0.5)
