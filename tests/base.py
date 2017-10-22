@@ -22,6 +22,8 @@ class BaseGUITestCase(unittest.TestCase):
     )
 
     def setUp(self):
+        super(BaseGUITestCase, self).setUp()
+
         self.build_dir = os.environ.get(
             'TRAVIS_BUILD_DIR',
             os.path.join(
@@ -44,6 +46,12 @@ class BaseGUITestCase(unittest.TestCase):
         # probably enough, but ideally we'd just check for the presence
         # of the window so we don't wait unnecessarily.
         time.sleep(5)
+
+        self.save_screenshot()
+
+    def tearDown(self):
+        self.save_screenshot()
+        super(BaseGUITestCase, self).tearDown()
 
     def _run_sikuli(self, name):
         proc = subprocess.Popen([
