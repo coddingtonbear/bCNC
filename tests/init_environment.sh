@@ -17,7 +17,7 @@ make new
 # EEPROM data saved from manually running the simulator -- these
 # settings should allow the emulator to run a ton faster than an
 # actual device would be able to.
-cp bCNC/tests/static/EEPROM.DAT .
+cp tests/static/EEPROM.DAT .
 cd $MAIN_DIR
 
 echo "Installing bCNC Requirements"
