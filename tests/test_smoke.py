@@ -12,7 +12,7 @@ class SmokeTest(BaseGUITestCase):
         self.save_screenshot()
 
         with self.async_sikuli_script('open_terminal.sikuli') as proc:
-            while not proc.poll():
+            while proc.poll() is None:
                 self.save_screenshot()
                 import time
                 time.sleep(0.5)
