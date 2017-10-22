@@ -51,9 +51,9 @@ class BaseGUITestCase(unittest.TestCase):
             os.path.join(
                 self.build_dir,
                 'bCNC.py',
-            )
+            ),
+            '--fullscreen'
         ])
-        self.run_sikuli_script('focus_bCNC.sikuli')
 
         if self.grbl_proc.poll():
             print("Serial port failed to start: %s" % self.grbl_proc.poll())
