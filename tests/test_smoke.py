@@ -18,17 +18,17 @@ class SmokeTest(BaseGUITestCase):
 
         self.save_screenshot()
         self.send_command('load /tmp/sample.gcode')
-        for _ in range(5):
-            self.save_screenshot()
-            time.sleep(1)
+        self.save_screenshot()
         pyautogui.press('f10')  # Mapped to 'start' in config
         for _ in range(10):
-            print self.get_bcnc_state()
             self.save_screenshot()
             time.sleep(1)
         pyautogui.press('f12')  # Mapped to 'stop' in config
         for _ in range(10):
-            print self.get_bcnc_state()
             self.save_screenshot()
             time.sleep(1)
         self.save_screenshot()
+
+        self.assertTrue(
+            'Alarm' in self.get_bcnc_state()['state']
+        )
