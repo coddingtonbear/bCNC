@@ -84,7 +84,7 @@ class BaseGUITestCase(unittest.TestCase):
         proc = self._run_sikuli(name)
         yield proc
         while proc.poll() is None:
-            if time.time() > started + timeout:
+            if timeout and time.time() > started + timeout:
                 proc.kill()
                 raise SikuliTimeout()
             time.sleep(0.1)
