@@ -27,5 +27,8 @@ class SmokeTest(BaseGUITestCase):
         print self.get_bcnc_state()
         self.send_command('stop')
         print self.get_bcnc_state()
+        for _ in range(10):
+            self.save_screenshot()
+            time.sleep(1)
         self.save_screenshot()
         print self.get_bcnc_state()
