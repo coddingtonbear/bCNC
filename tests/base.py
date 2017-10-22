@@ -48,12 +48,20 @@ class BaseGUITestCase(unittest.TestCase):
         time.sleep(5)
 
         self.save_screenshot()
-        print "Setup complete."
 
     def tearDown(self):
-        print "Running teardown..."
         self.save_screenshot()
-        super(BaseGUITestCase, self).tearDown()
+
+        max_termination_wait_seconds = 5
+        terminated = time.time()
+        self.gui_proc.terminate()
+
+        while(time.time() < terminated + max_termination_wait_seconds):
+            if self.gui_proc.poll():
+                return
+
+        # If we've made it this far, the process is still running
+        self.gui_proc.kill()
 
     def _run_sikuli(self, name):
         proc = subprocess.Popen([
@@ -93,7 +101,6 @@ class BaseGUITestCase(unittest.TestCase):
                 test_name=self.id(),
                 counter=self.screenshot_counter
             )
-        print "Saving screenshot as " + name
 
         if not os.path.isdir(self.SCREENSHOT_DIR):
             os.mkdir(self.SCREENSHOT_DIR)
@@ -117,15 +124,3 @@ class BaseGUITestCase(unittest.TestCase):
             )
 
         return '/usr/local/bin/python'
-
-    def tearDown(self):
-        max_termination_wait_seconds = 5
-        terminated = time.time()
-        self.gui_proc.terminate()
-
-        while(time.time() < terminated + max_termination_wait_seconds):
-            if self.gui_proc.poll():
-                return
-
-        # If we've made it this far, the process is still running
-        self.gui_proc.kill()
