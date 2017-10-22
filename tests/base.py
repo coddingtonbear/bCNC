@@ -1,3 +1,4 @@
+import contextlib
 import os
 import unittest
 import subprocess
@@ -35,6 +36,38 @@ class BaseGUITestCase(unittest.TestCase):
         # probably enough, but ideally we'd just check for the presence
         # of the window so we don't wait unnecessarily.
         time.sleep(5)
+
+    @contextlib.contextmanager
+    def async_sikuli_script(self, name):
+        proc = subprocess.Popen([
+            os.path.join(
+                self.build_dir,
+                'runsikulix'
+            ),
+            '-r',
+            os.path.join(
+                self.build_dir,
+                'tests/scripts/',
+                name,
+            )
+        ])
+        yield proc
+        proc.wait()
+
+    def run_sikuli_script(self, name):
+        proc = subprocess.Popen([
+            os.path.join(
+                self.build_dir,
+                'runsikulix'
+            ),
+            '-r',
+            os.path.join(
+                self.build_dir,
+                'tests/scripts/',
+                name,
+            )
+        ])
+        return proc.wait()
 
     def save_screenshot(self, name=None):
         if name is None:
