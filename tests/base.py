@@ -60,6 +60,7 @@ class BaseGUITestCase(unittest.TestCase):
     def send_command(self, cmd):
         pyautogui.press('space')
         pyautogui.typewrite(cmd)
+        pyautogui.press('enter')
         pyautogui.press('escape')
 
     def tearDown(self):
