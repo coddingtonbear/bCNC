@@ -70,8 +70,8 @@ class BaseGUITestCase(unittest.TestCase):
                 proc.kill()
                 raise SikuliTimeout()
             time.sleep(0.1)
-        if result != 0:
-            raise SikuliError(result)
+        if proc.returncode != 0:
+            raise SikuliError(proc.returncode)
 
     def run_sikuli_script(self, *args, **kwargs):
         with self.async_sikuli_script(*args, **kwargs) as proc:
