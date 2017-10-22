@@ -11,6 +11,10 @@ class SikuliError(Exception):
     pass
 
 
+class SikuliTimeout(SikuliError):
+    pass
+
+
 class BaseGUITestCase(unittest.TestCase):
     SCREENSHOT_DIR = os.path.join(
         os.path.dirname(__file__),
@@ -41,43 +45,37 @@ class BaseGUITestCase(unittest.TestCase):
         # of the window so we don't wait unnecessarily.
         time.sleep(5)
 
+    def _run_sikuli(self, name):
+        proc = subprocess.Popen([
+            os.path.join(
+                self.build_dir,
+                'runsikulix'
+            ),
+            '-r',
+            os.path.join(
+                self.build_dir,
+                'tests/scripts/',
+                name,
+            )
+        ])
+        return proc
+
     @contextlib.contextmanager
-    def async_sikuli_script(self, name):
-        proc = subprocess.Popen([
-            os.path.join(
-                self.build_dir,
-                'runsikulix'
-            ),
-            '-r',
-            os.path.join(
-                self.build_dir,
-                'tests/scripts/',
-                name,
-            )
-        ])
+    def async_sikuli_script(self, name, timeout=30):
+        started = time.time()
+        proc = self._run_sikuli(name)
         yield proc
-        result = proc.wait()
+        while not proc.poll():
+            if time.time() > started + timeout:
+                proc.kill()
+                raise SikuliTimeout()
+            time.sleep(0.1)
         if result != 0:
             raise SikuliError(result)
 
-    def run_sikuli_script(self, name):
-        proc = subprocess.Popen([
-            os.path.join(
-                self.build_dir,
-                'runsikulix'
-            ),
-            '-r',
-            os.path.join(
-                self.build_dir,
-                'tests/scripts/',
-                name,
-            )
-        ])
-        result = proc.wait()
-        if result != 0:
-            raise SikuliError(result)
-
-        return result
+    def run_sikuli_script(self, *args, **kwargs):
+        with self.async_sikuli_script(*args, **kwargs) as proc:
+            return proc.wait()
 
     def save_screenshot(self, name=None):
         if name is None:
