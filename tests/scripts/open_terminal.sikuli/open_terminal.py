@@ -1,2 +1,2 @@
 switchApp('bCNC')
-click("1508637730442.png")
+click("1508641153465.png")
