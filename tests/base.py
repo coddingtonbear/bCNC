@@ -151,7 +151,7 @@ class BaseGUITestCase(unittest.TestCase):
 
         self.screenshots.append({
             'time': time.time(),
-            'filename': name,
+            'filename': absolute_path,
         })
 
     def get_python_path(self):
