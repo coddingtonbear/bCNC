@@ -35,17 +35,22 @@ class BaseGUITestCase(unittest.TestCase):
                 '../',
             )
         )
-        self.grbl_proc = subprocess.Popen([
-            'socat',
-            '-d-d',
-            'PTY,raw,link=/tmp/ttyFAKE,echo=0,waitslave',
-            "EXEC:'{grbl_sim_path} 1 -n',pty,raw,echo=0".format(
-                grbl_sim_path=os.path.join(
-                    self.build_dir,
-                    'grbl/grbl/grbl-sim/grbl_sim.exe'
-                )
-            )
-        ])
+        dev_null = open(os.devnull, 'w')
+        self.grbl_proc = subprocess.Popen(
+            [
+                'socat',
+                '-d-d',
+                'PTY,raw,link=/tmp/ttyFAKE,echo=0,waitslave',
+                "EXEC:'{grbl_sim_path} 1 -n',pty,raw,echo=0".format(
+                    grbl_sim_path=os.path.join(
+                        self.build_dir,
+                        'grbl/grbl/grbl-sim/grbl_sim.exe'
+                    )
+                ),
+            ],
+            stdout=dev_null,
+            stderr=dev_null,
+        )
         self.gui_proc = subprocess.Popen([
             self.get_python_path(),
             os.path.join(
