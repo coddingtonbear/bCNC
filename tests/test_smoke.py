@@ -1,6 +1,8 @@
 import shutil
 import time
 
+import pyautogui
+
 from .base import BaseGUITestCase
 
 
@@ -19,13 +21,13 @@ class SmokeTest(BaseGUITestCase):
         for _ in range(10):
             self.save_screenshot()
             time.sleep(1)
-        self.send_command('run')
+        pyautogui.press('f10')  # Mapped to 'start' in config
         print self.get_bcnc_state()
         for _ in range(10):
             self.save_screenshot()
             time.sleep(1)
         print self.get_bcnc_state()
-        self.send_command('stop')
+        pyautogui.press('f12')  # Mapped to 'stop' in config
         print self.get_bcnc_state()
         for _ in range(10):
             self.save_screenshot()
