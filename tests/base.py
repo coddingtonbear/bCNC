@@ -23,6 +23,7 @@ class BaseGUITestCase(unittest.TestCase):
 
     def setUp(self):
         super(BaseGUITestCase, self).setUp()
+        self.screenshot_counter = 0
 
         self.build_dir = os.environ.get(
             'TRAVIS_BUILD_DIR',
@@ -39,13 +40,7 @@ class BaseGUITestCase(unittest.TestCase):
                 'bCNC.py',
             )
         ])
-
-        self.screenshot_counter = 0
-
-        # We need to give the GUI enough time to start up; this is
-        # probably enough, but ideally we'd just check for the presence
-        # of the window so we don't wait unnecessarily.
-        time.sleep(5)
+        self.run_sikuli_script('focus_bCNC.sikuli')
 
         self.save_screenshot()
 
@@ -94,6 +89,13 @@ class BaseGUITestCase(unittest.TestCase):
     def run_sikuli_script(self, *args, **kwargs):
         with self.async_sikuli_script(*args, **kwargs) as proc:
             return proc.wait()
+
+    def get_static_path(self, filename):
+        return os.path.join(
+            self.build_dir,
+            'tests/static/',
+            filename,
+        )
 
     def save_screenshot(self, name=None):
         if name is None:

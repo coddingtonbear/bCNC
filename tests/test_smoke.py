@@ -18,7 +18,7 @@ class SmokeTest(BaseGUITestCase):
         )
 
         with self.async_sikuli_script(
-            'open_terminal.sikuli',
+            'run_sample_gcode.sikuli',
             timeout=30*60,
         ) as proc:
             while proc.poll() is None:
