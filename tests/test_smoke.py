@@ -16,12 +16,14 @@ class SmokeTest(BaseGUITestCase):
 
         self.save_screenshot()
         self.send_command('load /tmp/sample.gcode')
-        self.save_screenshot()
+        for _ in range(10):
+            self.save_screenshot()
+            time.sleep(1)
         self.send_command('run')
         print self.get_bcnc_state()
-        self.save_screenshot()
-
-        time.sleep(5)
+        for _ in range(10):
+            self.save_screenshot()
+            time.sleep(1)
         print self.get_bcnc_state()
         self.send_command('stop')
         print self.get_bcnc_state()
