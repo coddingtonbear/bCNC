@@ -19,15 +19,14 @@ echo "Starting GRBL Simulator at /tmp/ttyFAKE"
 ./simport.sh &
 cd $MAIN_DIR
 
-#echo "Installing Sikulix"
-wget https://launchpad.net/sikuli/sikulix/1.1.1/+download/sikulixsetup-1.1.1.jar
-java -jar sikulixsetup-1.1.1.jar options 2
-
 echo "Installing bCNC Requirements"
-pip install 
-pip install -r ./requirements.txt
+pip install pillow==4.3.0
+pip install pyserial==3.4
+cp tests/travis_bcnc_config.ini ~/.bCNC
 
-echo "Installing Testing Requirements"
-pip install cython==0.27.1
-pip install pyjnius==1.1.1
+echo "Installing Sikulix"
+wget https://launchpad.net/sikuli/sikulix/1.1.1/+download/sikulixsetup-1.1.1.jar
+java -jar sikulixsetup-1.1.1.jar options 1.1
+
+echo "Installing Test Requirements"
 pip install pytest==3.2.3
