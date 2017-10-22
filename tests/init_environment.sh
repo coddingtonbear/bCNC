@@ -26,6 +26,7 @@ pip install pyserial==3.4
 cp tests/travis_bcnc_config.ini ~/.bCNC
 
 echo "Installing Test Requirements"
+pip install python-xlib==0.20
 pip install pytest==3.2.3
 pip install requests==2.18.4
 pip install pyautogui==0.9.36
