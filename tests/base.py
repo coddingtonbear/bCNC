@@ -55,14 +55,8 @@ class BaseGUITestCase(unittest.TestCase):
         durations = []
         prev_screenshot_time = None
         for screenshot in self.screenshots:
-            images.append(
-                imageio.imread(
-                    os.path.join(
-                        self.SCREENSHOT_DIR,
-                        screenshot['filename'],
-                    )
-                )
-            )
+            images.append(imageio.imread(screenshot['filename']))
+            os.unlink(screenshot['filename'])
             if prev_screenshot_time:
                 durations.append(
                     screenshot['time'] - prev_screenshot_time
@@ -142,13 +136,13 @@ class BaseGUITestCase(unittest.TestCase):
         if not os.path.isdir(self.SCREENSHOT_DIR):
             os.mkdir(self.SCREENSHOT_DIR)
 
-        im = pyscreenshot.grab()
-        im.save(
-            os.path.join(
-                self.SCREENSHOT_DIR,
-                name,
-            )
+        absolute_path = os.path.join(
+            self.SCREENSHOT_DIR,
+            name,
         )
+
+        im = pyscreenshot.grab()
+        im.save(absolute_path)
         self.screenshot_counter += 1
 
         self.screenshots.append({
