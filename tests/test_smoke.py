@@ -16,18 +16,11 @@ class SmokeTest(BaseGUITestCase):
             '/tmp/',
         )
 
-        self.save_screenshot()
         self.send_command('load /tmp/sample.gcode')
-        self.save_screenshot()
         pyautogui.press('f10')  # Mapped to 'start' in config
-        for _ in range(10):
-            self.save_screenshot()
-            time.sleep(1)
+        self.delay(10)
         pyautogui.press('f12')  # Mapped to 'stop' in config
-        for _ in range(10):
-            self.save_screenshot()
-            time.sleep(1)
-        self.save_screenshot()
+        self.delay(10)
 
         state = self.get_bcnc_state()
         # Assert that we moved the tool position

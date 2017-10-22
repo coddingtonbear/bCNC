@@ -58,10 +58,17 @@ class BaseGUITestCase(unittest.TestCase):
             self.save_screenshot()
 
     def send_command(self, cmd):
+        self.save_screenshot()
         pyautogui.hotkey('ctrl', 'space')
         pyautogui.typewrite(cmd)
+        self.save_screenshot()
         pyautogui.press('enter')
         pyautogui.press('escape')
+
+    def delay(self, seconds):
+        for _ in range(seconds):
+            self.save_screenshot()
+            time.sleep(1)
 
     def tearDown(self):
         self.save_screenshot()
