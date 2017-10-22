@@ -35,7 +35,12 @@ class BaseGUITestCase(unittest.TestCase):
                 '../',
             )
         )
-
+        self.grbl_proc = subprocess.Popen([
+            'socat',
+            '-d-d',
+            'PTY,raw,link=/tmp/ttyFAKE,echo=0,ignoreeof',
+            "EXEC:'./grbl_sim.exe 1 -n',pty,raw,echo=0"
+        ])
         self.gui_proc = subprocess.Popen([
             self.get_python_path(),
             os.path.join(
@@ -82,6 +87,7 @@ class BaseGUITestCase(unittest.TestCase):
         max_termination_wait_seconds = 5
         terminated = time.time()
         self.gui_proc.terminate()
+        self.grbl_proc.terminate()
 
         while(time.time() < terminated + max_termination_wait_seconds):
             if self.gui_proc.poll():
