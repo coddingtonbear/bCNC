@@ -28,7 +28,6 @@ pip install
 pip install -r ./requirements.txt
 
 echo "Installing Testing Requirements"
-pip install pyobjc==4.0
 pip install cython==0.27.1
 pip install pyjnius==1.1.1
 pip install pytest==3.2.3
