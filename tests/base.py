@@ -21,6 +21,7 @@ class BaseGUITestCase(unittest.TestCase):
         os.path.dirname(__file__),
         '../screenshots/'
     )
+    DEFAULT_SCREENSHOT_FRAME_DURATION = 0.5
 
     def setUp(self):
         super(BaseGUITestCase, self).setUp()
@@ -51,15 +52,25 @@ class BaseGUITestCase(unittest.TestCase):
 
         # Create an animated gif of the captured screenshots for this test.
         images = []
-        for screenshot_name in self.screenshots:
+        durations = []
+        prev_screenshot_time = None
+        for screenshot in self.screenshots:
             images.append(
                 imageio.imread(
                     os.path.join(
                         self.SCREENSHOT_DIR,
-                        screenshot_name,
+                        screenshot['filename'],
                     )
                 )
             )
+            if prev_screenshot_time:
+                durations.append(
+                    screenshot['time'] - prev_screenshot_time
+                )
+            else:
+                durations.append(self.DEFAULT_SCREENSHOT_FRAME_DURATION)
+            prev_screenshot_time = screenshot['time']
+
         imageio.mimsave(
             os.path.join(
                 self.SCREENSHOT_DIR,
@@ -68,7 +79,7 @@ class BaseGUITestCase(unittest.TestCase):
                 )
             ),
             images,
-            fps=0.5
+            duration=durations,
         )
 
         max_termination_wait_seconds = 5
@@ -140,7 +151,10 @@ class BaseGUITestCase(unittest.TestCase):
         )
         self.screenshot_counter += 1
 
-        self.screenshots.append(name)
+        self.screenshots.append({
+            'time': time.time(),
+            'filename': name,
+        })
 
     def get_python_path(self):
         virtual_env = os.environ.get('VIRTUAL_ENV')
