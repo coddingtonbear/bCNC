@@ -85,6 +85,7 @@ class BaseGUITestCase(unittest.TestCase):
                 test_name=self.id(),
                 counter=self.screenshot_counter
             )
+        print "Saving screenshot as " + name
 
         if not os.path.isdir(self.SCREENSHOT_DIR):
             os.mkdir(self.SCREENSHOT_DIR)
