@@ -41,7 +41,7 @@ class BaseGUITestCase(unittest.TestCase):
                 'socat',
                 '-d-d',
                 'PTY,raw,link=/tmp/ttyFAKE,echo=0,waitslave',
-                "EXEC:'{grbl_sim_path} -n',pty,raw,echo=0".format(
+                "EXEC:'{grbl_sim_path} 100000 -n',pty,raw,echo=0".format(
                     grbl_sim_path=os.path.join(
                         self.build_dir,
                         'grbl/grbl/grbl-sim/grbl_sim.exe'
