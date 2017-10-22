@@ -18,6 +18,7 @@ class SmokeTest(BaseGUITestCase):
 
         while self.get_bcnc_state()['state'] != 'Idle':
             self.save_screenshot()
+            print self.get_bcnc_state()
             time.sleep(0.5)
 
         self.assertTrue(
