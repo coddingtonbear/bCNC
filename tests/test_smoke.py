@@ -29,6 +29,7 @@ class SmokeTest(BaseGUITestCase):
             time.sleep(1)
         self.save_screenshot()
 
+        print(self.get_bcnc_state())
         self.assertTrue(
             'Alarm' in self.get_bcnc_state()['state']
         )
