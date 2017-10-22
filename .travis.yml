@@ -9,7 +9,6 @@ addons:
             - libpng-dev
             - zlib1g-dev
             - libxtst-dev
-            - libtesseract-dev
             - libopencv-dev
             - socat
             - wmctrl
