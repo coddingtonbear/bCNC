@@ -3,7 +3,7 @@ import unittest
 import subprocess
 import time
 
-import autopy
+from pyscreenshot import ImageGrab
 
 
 class BaseGUITestCase(unittest.TestCase):
@@ -46,7 +46,8 @@ class BaseGUITestCase(unittest.TestCase):
         if not os.path.isdir(self.SCREENSHOT_DIR):
             os.mkdir(self.SCREENSHOT_DIR)
 
-        autopy.bitmap.capture_screen().save(
+        im = ImageGrab.grab()
+        im.save(
             os.path.join(
                 self.SCREENSHOT_DIR,
                 name,

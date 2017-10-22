@@ -29,4 +29,5 @@ wget https://launchpad.net/sikuli/sikulix/1.1.1/+download/sikulixsetup-1.1.1.jar
 java -jar sikulixsetup-1.1.1.jar options 1.1
 
 echo "Installing Test Requirements"
+pip install pyscreenshot==0.4.2
 pip install pytest==3.2.3
