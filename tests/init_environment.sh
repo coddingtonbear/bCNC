@@ -14,6 +14,10 @@ git clone https://github.com/grbl/grbl-sim.git
 cd grbl-sim
 git checkout ff1e887d1fd68cfa3dedc50d78ee928c8358d6ba
 make new
+# EEPROM data saved from manually running the simulator -- these
+# settings should allow the emulator to run a ton faster than an
+# actual device would be able to.
+cp bCNC/tests/static/EEPROM.DAT .
 cd $MAIN_DIR
 
 echo "Installing bCNC Requirements"
