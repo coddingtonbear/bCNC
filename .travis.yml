@@ -11,6 +11,7 @@ addons:
             - libxtst-dev
             - libtesseract-dev
             - libopencv-dev
+            - lubuntu-desktop
             - socat
             - wmctrl
 cache:
