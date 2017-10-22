@@ -39,7 +39,12 @@ class BaseGUITestCase(unittest.TestCase):
             'socat',
             '-d-d',
             'PTY,raw,link=/tmp/ttyFAKE,echo=0,ignoreeof',
-            "EXEC:'./grbl_sim.exe 1 -n',pty,raw,echo=0"
+            "EXEC:'{grbl_sim_path} 1 -n',pty,raw,echo=0".format(
+                grbl_sim_path=os.path.join(
+                    self.build_dir,
+                    'grbl/grbl/grbl-sim/grbl_sim.exe'
+                )
+            )
         ])
         self.gui_proc = subprocess.Popen([
             self.get_python_path(),
@@ -49,6 +54,9 @@ class BaseGUITestCase(unittest.TestCase):
             )
         ])
         self.run_sikuli_script('focus_bCNC.sikuli')
+
+        if self.grbl_proc.poll():
+            print("Serial port failed to start: %s" % self.grbl_proc.poll())
 
         self.save_screenshot()
 
