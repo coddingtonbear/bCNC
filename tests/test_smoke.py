@@ -16,7 +16,7 @@ class SmokeTest(BaseGUITestCase):
 
         self.run_sikuli_script('run_sample_gcode.sikuli')
 
-        max_time = time.time() + 60
+        max_time = time.time() + 600
         while (
             self.get_bcnc_state()['state'] != 'Idle'
             and time.time() < max_time
