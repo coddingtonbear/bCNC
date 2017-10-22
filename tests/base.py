@@ -22,7 +22,6 @@ class BaseGUITestCase(unittest.TestCase):
         os.path.dirname(__file__),
         '../screenshots/'
     )
-    DEFAULT_SCREENSHOT_FRAME_DURATION = 0.5
 
     def setUp(self):
         super(BaseGUITestCase, self).setUp()
@@ -62,9 +61,12 @@ class BaseGUITestCase(unittest.TestCase):
                 durations.append(
                     screenshot['time'] - prev_screenshot_time
                 )
-            else:
-                durations.append(self.DEFAULT_SCREENSHOT_FRAME_DURATION)
             prev_screenshot_time = screenshot['time']
+        # We didn't record a duration for the first frame because we
+        # couldn't know it until we processed the second frame -- we won't
+        # have a frame to process after the last frame, so let's mark
+        # that frame to be displayed for 1s.
+        durations.append(1)
 
         imageio.mimsave(
             os.path.join(
